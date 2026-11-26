@@ -1,5 +1,11 @@
 {
-  "visitors": [],
+  "visitors": [
+    {
+      "user": "fizzyappy",
+      "microbe": "lcasei",
+      "at": "2026-11-26T19:38:52+00:00"
+    }
+  ],
   "koi": [],
   "feeds": []
 }
