@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=7d2a790b"><img src="assets/hero-dark.svg?v=b26dcabb" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=8df8df81"><img src="assets/hero-dark.svg?v=1215a64a" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
@@ -53,7 +53,7 @@
 </p>
 
 <p align="center">
-<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=ce0d3b91"><img src="assets/dish-dark.svg?v=91840e22" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
+<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=61f4350e"><img src="assets/dish-dark.svg?v=2408d269" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>
