@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   inoculate:
-    if: contains(github.event.issue.title, 'inoculate:') || contains(github.event.issue.title, 'release:')
+    if: contains(github.event.issue.title, 'inoculate:') || contains(github.event.issue.title, 'release:') || contains(github.event.issue.title, 'feed the koi')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
