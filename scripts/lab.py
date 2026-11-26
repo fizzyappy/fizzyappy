@@ -168,9 +168,7 @@ def pond_extras(t, state, dishd, w, h):
     under, over = [], []
 
     # time of day tint
-    tint = {"dawn": ("#ff9fb3", .16), "dusk": ("#ff8a3d", .18), "night": ("#060a24", .48)}.get(phase)
-    if tint:
-        over.append(f'<rect width="{w}" height="{h}" fill="{tint[0]}" opacity="{tint[1]}"/>')
+    # no colour tint: the pond keeps its own colours at every hour
     if phase == "night":
         over.append('<circle cx="760" cy="70" r="20" fill="#fff6d8" opacity=".9"/><circle cx="752" cy="64" r="20" fill="#060a24" opacity=".0"/>'
                     '<ellipse cx="760" cy="200" rx="26" ry="6" fill="#fff6d8" opacity=".12" style="animation:shimmer 3s ease-in-out infinite alternate"/>')
