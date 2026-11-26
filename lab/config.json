@@ -1,0 +1,73 @@
+{
+  "user": "fizzyappy",
+  "repo": "fizzyappy/fizzyappy",
+  "name": "Aparna Trivedi",
+  "roles": ["biochemical engineer", "digital artist", "builder of useful little things"],
+  "tagline": "Final year, Biochemical Engineering & Biotechnology, IIT Delhi",
+  "now": "final-year BTP on oral microbes + placement season",
+
+  "links": {
+    "website": "",
+    "linkedin": "",
+    "email": "",
+    "instagram": "",
+    "behance": ""
+  },
+
+  "readouts": [
+    {"value": "02", "label": ["apps live in", "production"], "color": "lime", "live": true},
+    {"value": "03", "label": ["hackathons", "entered"], "color": "pink"},
+    {"value": "01", "label": ["client website", "shipped"], "color": "blue"},
+    {"value": "'27", "label": ["B.Tech batch,", "IIT Delhi"], "color": "orange"}
+  ],
+
+  "elements": [
+    ["Py", "Python", "code"], ["Js", "JavaScript", "code"], ["Re", "React", "code"],
+    ["Nd", "Node.js", "code"], ["Ht", "HTML/CSS", "code"], ["Vc", "Vercel", "code"],
+    ["Ag", "Agentic AI", "code"], ["Gm", "Gemini API", "code"], ["Gt", "Git", "code"],
+    ["Dg", "Digital art", "design"], ["Br", "Branding", "design"], ["Po", "Posters", "design"],
+    ["Wd", "Web design", "design"], ["Bp", "Bioprocess", "bio"], ["Ek", "Enzyme kinetics", "bio"],
+    ["Mm", "Metabolic models", "bio"], ["Sp", "Spectroscopy", "bio"], ["Pi", "P&ID", "bio"]
+  ],
+
+  "projects": [
+    {"id": "finn", "no": "01", "title": "FINN", "kind": "app · live",
+     "blurb": "Reads every exchange filing for your portfolio, ranks what matters, and keeps a promise ledger of what management said vs. did.",
+     "tags": ["Python", "LLMs", "Vercel"], "cta": "open the app", "url": "https://finn-henna.vercel.app",
+     "color": "lime", "motif": "chart"},
+    {"id": "saathi", "no": "02", "title": "Saathi", "kind": "hackathon · ScriptedBy{Her} 2.0",
+     "blurb": "An agentic AI teammate for India's smallest sellers: diagnoses listings, fixes pricing, predicts returns, explains it all in Hindi.",
+     "tags": ["Agentic AI", "Hindi voice"], "cta": "view repo", "url": "https://github.com/fizzyappy/Saathi-",
+     "color": "pink", "motif": "orb"},
+    {"id": "elementary", "no": "03", "title": "Elementary", "kind": "app · live",
+     "blurb": "A periodic table that explains every element at the reading level you pick, from grade 1 to grade 8.",
+     "tags": ["React", "Vite", "Gemini"], "cta": "open the app", "url": "https://elementary-iota.vercel.app",
+     "color": "blue", "motif": "element"},
+    {"id": "humanink", "no": "04", "title": "Human Ink", "kind": "product concept · Flipkart",
+     "blurb": "The Ink Pen and Ink Keyboard: products that seal proof a real person wrote your note.",
+     "tags": ["Product", "Prototype"], "cta": "view repo", "url": "https://github.com/fizzyappy/Human-Ink-Flipkart",
+     "color": "orange", "motif": "nib"},
+    {"id": "sonakshi", "no": "05", "title": "Sonakshi Sanyal", "kind": "client website",
+     "blurb": "A single-page portfolio for an illustrator and writer: gallery, publications and gentle animation, no build step.",
+     "tags": ["HTML", "CSS", "JS"], "cta": "view repo", "url": "https://github.com/fizzyappy/Sonakshi-Sanyal-Website",
+     "color": "violet", "motif": "brush"},
+    {"id": "quant", "no": "06", "title": "GS Quant Hackathon", "kind": "hackathon · 2026",
+     "blurb": "Goldman Sachs Quant Hackathon: ETF proxy models for NAV, risk and hedging.",
+     "tags": ["Python", "Optimisation"], "cta": "more soon", "url": "https://github.com/fizzyappy",
+     "color": "yellow", "motif": "line"}
+  ],
+
+  "wetlab": [
+    {"title": "Oral microbiome model", "lines": ["S. mutans × L. casei growth,", "solo and in coculture, in", "artificial saliva. BacArena · BTP"], "icon": "dish"},
+    {"title": "Bacopa monnieri", "lines": ["FTIR + UV-Vis fingerprinting", "of a crude extract and its", "partially purified fraction"], "icon": "leaf"},
+    {"title": "Vinegar plant P&ID", "lines": ["Acetobacter process, 20 units,", "mass balances and control", "loops. Team of five"], "icon": "pid"}
+  ],
+
+  "microbes": {
+    "smutans":  {"name": "S. mutans",     "full": "Streptococcus mutans",     "color": "orange", "shape": "chain"},
+    "lcasei":   {"name": "L. casei",      "full": "Lactobacillus casei",      "color": "lime",   "shape": "rod"},
+    "aceti":    {"name": "A. aceti",      "full": "Acetobacter aceti",        "color": "blue",   "shape": "short"},
+    "ecoli":    {"name": "E. coli",       "full": "Escherichia coli",         "color": "violet", "shape": "rod"},
+    "yeast":    {"name": "S. cerevisiae", "full": "Saccharomyces cerevisiae", "color": "yellow", "shape": "bud"}
+  }
+}
