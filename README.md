@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero-dark.svg" alt="Aparna Trivedi: biochemical engineer, digital artist, builder of useful little things" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero-dark.svg" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
@@ -17,6 +17,7 @@
 <a href="https://github.com/fizzyappy/fizzyappy/issues/new?title=%F0%9F%8E%8F%20release%3A%20sumi&body=Releasing%20a%20sumi%20koi%20into%20the%20pond.%0A%0AJust%20press%20%2A%2ASubmit%2A%2A.%20It%20starts%20swimming%20with%20your%20name%20in%20about%20a%20minute."><picture><source media="(prefers-color-scheme: light)" srcset="assets/koi-sumi-light.svg"><img src="assets/koi-sumi-dark.svg" alt="release a sumi koi" width="19%"></picture></a>
 <a href="https://github.com/fizzyappy/fizzyappy/issues/new?title=%F0%9F%8E%8F%20release%3A%20peacock&body=Releasing%20a%20peacock%20koi%20into%20the%20pond.%0A%0AJust%20press%20%2A%2ASubmit%2A%2A.%20It%20starts%20swimming%20with%20your%20name%20in%20about%20a%20minute."><picture><source media="(prefers-color-scheme: light)" srcset="assets/koi-peacock-light.svg"><img src="assets/koi-peacock-dark.svg" alt="release a peacock koi" width="19%"></picture></a>
 </p>
+<p align="center"><a href="https://github.com/fizzyappy/fizzyappy/issues/new?title=%F0%9F%8D%99%20feed%20the%20koi&body=Scattering%20pellets.%20Just%20press%20%2A%2ASubmit%2A%2A."><b>🍙 or feed the koi</b></a> &nbsp;·&nbsp; <sub>the pond follows delhi's clock and weather, and dresses up for festivals</sub></p>
 
 <p align="center"><picture><source media="(prefers-color-scheme: light)" srcset="assets/divider-light.svg"><img src="assets/divider-dark.svg" alt="" width="100%"></picture></p>
 

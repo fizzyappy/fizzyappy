@@ -134,6 +134,135 @@ def bubbles(r, n, x0, x1, ybot, ytop, t, color=None, rmin=2, rmax=7, dur=(6, 13)
            "@keyframes wobB{from{transform:translateX(3px)}to{transform:translateX(-4px)}}")
     return "\n".join(out), css
 
+
+# ───────────────────────────── LIVING POND: time, weather, festivals, feeding ─────────────────────────────
+FESTIVALS = {  # date → (name, mode). Edit freely.
+    "2026-11-08": ("diwali", "diwali"), "2026-11-07": ("diwali", "diwali"), "2026-11-09": ("diwali", "diwali"),
+    "2027-01-14": ("makar sankranti", "kites"), "2027-01-26": ("republic day", "kites"),
+    "2027-03-22": ("holi", "holi"), "2027-03-21": ("holi", "holi"),
+    "2027-08-15": ("independence day", "kites"),
+    "2027-10-28": ("diwali", "diwali"), "2027-10-29": ("diwali", "diwali"), "2027-10-30": ("diwali", "diwali"),
+}
+
+def ist_now():
+    return dt.datetime.now(dt.timezone(dt.timedelta(hours=5, minutes=30)))
+
+def sky_phase(hour):
+    if 5 <= hour < 7: return "dawn"
+    if 7 <= hour < 17: return "day"
+    if 17 <= hour < 19: return "dusk"
+    return "night"
+
+def feeds_today(dishd):
+    today = ist_now().date().isoformat()
+    return [f for f in dishd.get("feeds", []) if f.get("day") == today]
+
+def pond_extras(t, state, dishd, w, h):
+    """Returns (under_fish, over_fish, chip_text, feed_spot) SVG fragments."""
+    sky = state.get("sky", {})
+    phase = sky.get("phase") or sky_phase(ist_now().hour)
+    weather = sky.get("weather", "clear")
+    temp = sky.get("temp")
+    fest = FESTIVALS.get(ist_now().date().isoformat())
+    r = rng("extras" + ist_now().date().isoformat())
+    under, over = [], []
+
+    # time of day tint
+    tint = {"dawn": ("#ff9fb3", .16), "dusk": ("#ff8a3d", .18), "night": ("#060a24", .48)}.get(phase)
+    if tint:
+        over.append(f'<rect width="{w}" height="{h}" fill="{tint[0]}" opacity="{tint[1]}"/>')
+    if phase == "night":
+        over.append('<circle cx="760" cy="70" r="20" fill="#fff6d8" opacity=".9"/><circle cx="752" cy="64" r="20" fill="#060a24" opacity=".0"/>'
+                    '<ellipse cx="760" cy="200" rx="26" ry="6" fill="#fff6d8" opacity=".12" style="animation:shimmer 3s ease-in-out infinite alternate"/>')
+        for i in range(16):  # fireflies
+            x, y = r.uniform(300, 820), r.uniform(40, 410); d = r.uniform(5, 9)
+            over.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="2" fill="#f7ff9e" style="animation:fly{i%3} {d:.1f}s ease-in-out {-r.uniform(0,d):.1f}s infinite alternate">'
+                        f'<animate attributeName="opacity" values=".1;1;.1" dur="{r.uniform(1.5,3):.1f}s" repeatCount="indefinite"/></circle>')
+    # weather
+    if weather == "rain":
+        for i in range(26):
+            x, y, b = r.uniform(20, 820), r.uniform(20, 410), r.uniform(0, 2.5)
+            under.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="1" stroke="{t["ink"]}" stroke-width="1" fill="none" opacity="0">'
+                         f'<animate attributeName="r" values="1;14" dur="1.4s" begin="{b:.1f}s" repeatCount="indefinite"/>'
+                         f'<animate attributeName="opacity" values=".5;0" dur="1.4s" begin="{b:.1f}s" repeatCount="indefinite"/></circle>')
+        for i in range(40):
+            x, d = r.uniform(0, 860), r.uniform(.5, .9)
+            over.append(f'<line x1="{x:.0f}" y1="-20" x2="{x-6:.0f}" y2="-4" stroke="{t["ink"]}" stroke-opacity=".25" '
+                        f'style="animation:rain {d:.2f}s linear {-r.uniform(0,d):.2f}s infinite"/>')
+    if weather in ("fog", "smog"):
+        for i in range(3):
+            over.append(f'<ellipse cx="{200+i*260}" cy="{120+i*110}" rx="260" ry="60" fill="#d9d4cc" opacity=".22" '
+                        f'style="animation:fogdrift {30+i*8}s ease-in-out infinite alternate"/>')
+    # festivals
+    if fest and fest[1] == "diwali":
+        for i in range(7):
+            x, y = r.uniform(380, 800), r.uniform(60, 400); d = r.uniform(14, 24)
+            over.append(f'<g transform="translate({x:.0f} {y:.0f})"><g style="animation:diya {d:.0f}s ease-in-out infinite alternate">'
+                        f'<path d="M-10,0 Q0,9 10,0 Z" fill="#c2551d"/><ellipse cx="0" cy="-4" rx="2.6" ry="5" fill="#ffd34d">'
+                        f'<animate attributeName="ry" values="5;6.5;5" dur=".6s" repeatCount="indefinite"/></ellipse>'
+                        f'<circle cx="0" cy="-4" r="12" fill="#ffb020" opacity=".18"/></g></g>')
+        for i in range(10):  # marigold petals
+            x, y = r.uniform(300, 830), r.uniform(30, 410)
+            over.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r.uniform(3,5):.1f}" fill="{t["orange"]}" opacity=".85"/>')
+    if fest and fest[1] == "holi":
+        cols = [t["pink"], t["orange"], t["lime"], t["blue"], t["violet"], t["yellow"]]
+        for i in range(14):
+            x, y, c = r.uniform(300, 830), r.uniform(30, 410), r.choice(cols)
+            under.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r.uniform(20,46):.0f}" fill="{c}" opacity=".22"/>')
+    if fest and fest[1] == "kites":
+        for i, c in enumerate([t["orange"], "#ffffff", t["lime"]]):
+            x = 560 + i * 90
+            over.append(f'<g style="animation:kite {4+i}s ease-in-out infinite alternate"><path d="M{x},40 l14,18 l-14,22 l-14,-22 Z" fill="{c}" stroke="{t["ink"]}" stroke-opacity=".4"/>'
+                        f'<path d="M{x},80 q10,30 -6,60" stroke="{t["ink"]}" stroke-opacity=".3"/></g>')
+    # feeding
+    fed = feeds_today(dishd)
+    spot = None
+    if fed:
+        sr = rng("spot" + ist_now().date().isoformat())
+        spot = (sr.uniform(430, 720), sr.uniform(140, 330))
+        n = min(30, 6 + 3 * len(fed))
+        for i in range(n):
+            a, d = sr.uniform(0, 6.28), sr.uniform(4, 34)
+            px, py = spot[0] + math.cos(a) * d, spot[1] + math.sin(a) * d
+            under.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="2.2" fill="#c98a3a" style="animation:pellet {sr.uniform(2,4):.1f}s ease-in-out infinite alternate"/>')
+        under.append(f'<circle cx="{spot[0]:.0f}" cy="{spot[1]:.0f}" r="6" stroke="{t["ink"]}" fill="none" opacity="0">'
+                     f'<animate attributeName="r" values="6;50" dur="3s" repeatCount="indefinite"/>'
+                     f'<animate attributeName="opacity" values=".5;0" dur="3s" repeatCount="indefinite"/></circle>')
+    bits = ["delhi", phase]
+    if temp is not None: bits.insert(1, f"{temp}°")
+    if weather != "clear": bits.append(weather)
+    if fest: bits.append(f"happy {fest[0]}!")
+    if fed: bits.append(f"fed {len(fed)}× today")
+    return "".join(under), "".join(over), " · ".join(bits), spot
+
+EXTRAS_CSS = ("@keyframes fly0{to{transform:translate(18px,-14px)}}@keyframes fly1{to{transform:translate(-16px,10px)}}@keyframes fly2{to{transform:translate(10px,16px)}}"
+              "@keyframes rain{from{transform:translateY(0)}to{transform:translateY(460px)}}"
+              "@keyframes fogdrift{from{transform:translateX(-60px)}to{transform:translateX(60px)}}"
+              "@keyframes diya{from{transform:translate(0,0)}to{transform:translate(-40px,12px)}}"
+              "@keyframes kite{from{transform:translate(0,0) rotate(-4deg)}to{transform:translate(8px,6px) rotate(5deg)}}"
+              "@keyframes pellet{from{transform:translateY(0)}to{transform:translateY(2px)}}"
+              "@keyframes shimmer{from{opacity:.06}to{opacity:.18}}")
+
+def fetch_sky():
+    """Delhi weather + air from open-meteo (no key needed)."""
+    def get(u):
+        with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "fizzyappy-lab"}), timeout=20) as r:
+            return json.loads(r.read())
+    sky = {"phase": sky_phase(ist_now().hour), "weather": "clear"}
+    try:
+        cw = get("https://api.open-meteo.com/v1/forecast?latitude=28.61&longitude=77.21&current=temperature_2m,weather_code")["current"]
+        code = cw["weather_code"]; sky["temp"] = round(cw["temperature_2m"])
+        if code in (45, 48): sky["weather"] = "fog"
+        elif 51 <= code <= 67 or 80 <= code <= 82 or code >= 95: sky["weather"] = "rain"
+    except Exception as e:
+        print("weather skipped:", e)
+    try:
+        aq = get("https://air-quality-api.open-meteo.com/v1/air-quality?latitude=28.61&longitude=77.21&current=pm2_5")["current"]
+        if sky["weather"] == "clear" and aq.get("pm2_5", 0) > 150: sky["weather"] = "smog"
+    except Exception as e:
+        print("air skipped:", e)
+    return sky
+
 # ───────────────────────────── HERO: the koi pond ─────────────────────────────
 KOI = {  # body colour, patch colours, label
     "kohaku":   ("#fff4e6", ["red"], "kohaku"),
@@ -202,9 +331,10 @@ def lotus_flower(x, y, t):
     return (f'<g transform="translate({x} {y})"><g style="animation:bob 4s ease-in-out infinite alternate">{petals}'
             f'<ellipse cx="0" cy="-4" rx="6" ry="3" fill="{t["yellow"]}"/></g></g>')
 
-def hero(cfg, t, mode, dishd=None):
+def hero(cfg, t, mode, dishd=None, state=None):
     w, h = W, 430
     dishd = dishd or {}
+    under, over, chip, spot = pond_extras(t, state or {}, dishd, w, h)
     caus = "".join(
         f'<path d="M-70,{y} ' + "q35,-10 70,0 t70,0 " * 14 + f'" stroke="{t["ink"]}" stroke-opacity=".07" stroke-width="1.4" '
         f'style="animation:drift {14+i*3}s linear infinite {-i*2}s"/>' for i, y in enumerate(range(60, 430, 52)))
@@ -216,16 +346,19 @@ def hero(cfg, t, mode, dishd=None):
     fish, labels = [], []
     residents = [("kohaku", "r1"), ("marigold", "r2"), ("rani", "r3"), ("sumi", "r4"), ("kohaku", "r5")]
     visitors = [v for v in (dishd.get("koi") or []) if v.get("koi") in KOI][-12:]
-    allk = [(k, u, None, 1.05) for k, u in residents] + [(v["koi"], "v" + v["user"], v["user"], .9) for v in visitors]
-    for kind, uid, user, sc in allk:
+    allk = [(k, u, None, 1.05, "") for k, u in residents] + [(v["koi"], "v" + v["user"], v["user"], .9, v.get("name", "")) for v in visitors]
+    for kind, uid, user, sc, name in allk:
         rr = rng("path" + uid)
-        d = wander("path" + uid, 40, 40, 800, 395, n=rr.choice([5, 6, 7]))
+        if spot and not user:   # fed today: residents gather around the food
+            d = wander("path" + uid + "fed", spot[0]-120, spot[1]-90, spot[0]+120, spot[1]+90, n=rr.choice([5, 6]))
+        else:
+            d = wander("path" + uid, 40, 40, 800, 395, n=rr.choice([5, 6, 7]))
         dur = rr.uniform(26, 44); beg = -rr.uniform(0, dur)
         fish.append(f'<g>{koi_fish(kind, t, uid, sc)}'
                     f'<animateMotion path="{d}" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite" rotate="auto"/></g>')
         if user:
             labels.append(f'<g><g transform="translate(0 -20)"><text x="0" y="0" text-anchor="middle" class="mono" font-size="10" '
-                          f'fill="{t["ink"]}" opacity=".85">@{esc(user)}</text></g>'
+                          f'fill="{t["ink"]}" opacity=".85">{esc(name + " · ") if name else ""}@{esc(user)}</text></g>'
                           f'<animateMotion path="{d}" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/></g>')
     pads = (lotus_pad(640, 352, 40, t, 0) + lotus_pad(778, 96, 28, t, 1) + lotus_pad(92, 380, 24, t, 2)
             + lotus_pad(500, 398, 18, t, 3) + lotus_pad(712, 398, 20, t, 4))
@@ -245,28 +378,30 @@ def hero(cfg, t, mode, dishd=None):
 {panel(w, h, t)}
 <g clip-path="url(#pc)">
   <rect width="{w}" height="{h}" fill="url(#water)"/>
-  {caus}{rip}
+  {caus}{rip}{under}
   {"".join(fish)}
   {pads}
   {lotus_flower(640, 346, t)}
   <rect width="{w}" height="{h}" fill="url(#fade)"/>
   {"".join(labels)}
+  {over}
   {mandala(w-20, 20, 120, t["orange"], .16, 90)}
 </g>
+<g transform="translate({w-30} {h-26})"><text x="0" y="0" text-anchor="end" class="mono" font-size="10.5" fill="{t["ink"]}" opacity=".75">{esc(chip)}</text></g>
 {kolam_border(w, h, t)}
 <text x="54" y="74" class="mono" font-size="13" fill="{t["mute"]}">~/{esc(cfg["user"])}</text>
 <circle cx="{62+um:.0f}" cy="69.5" r="4" fill="{t["orange"]}" style="animation:blink 1.6s ease-in-out infinite"/>
 <text x="{72+um:.0f}" y="74" class="mono" font-size="13" fill="{t["mute"]}">pond &amp; lab notebook, vol. {dt.date.today():%y}</text>
 <text x="50" y="188" class="serif" font-size="88" fill="{t["ink"]}" letter-spacing="-1">{esc(cfg["name"])}</text>
-<text x="54" y="226" class="sans" font-size="17" fill="{t["mute"]}">hi, i'm the</text>
+<text x="54" y="226" class="sans" font-size="17" fill="{t["mute"]}">hi, i'm a</text>
 {role_txt}
 <text x="54" y="314" class="sans" font-size="15" fill="{t["ink"]}" opacity=".8">{esc(cfg["tagline"])}</text>
 <g transform="translate(54 342)">
-  <rect width="238" height="32" rx="16" fill="{t["panel"]}" fill-opacity=".75" stroke="{t["orange"]}" stroke-opacity=".7"/>
-  <circle cx="18" cy="16" r="4" fill="{t["orange"]}" style="animation:blink 1.6s ease-in-out infinite"/>
-  <text x="32" y="21" class="mono" font-size="12" fill="{t["ink"]}">release your own koi below ↓</text>
+  <rect width="190" height="24" rx="12" fill="{t["panel"]}" fill-opacity=".75" stroke="{t["orange"]}" stroke-opacity=".7"/>
+  <circle cx="13" cy="12" r="3" fill="{t["orange"]}" style="animation:blink 1.6s ease-in-out infinite"/>
+  <text x="23" y="16" class="mono" font-size="9.5" fill="{t["ink"]}">release your own koi below ↓</text>
 </g>"""
-    css = (role_css + SPIN_CSS +
+    css = (role_css + SPIN_CSS + EXTRAS_CSS +
            "@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-140px)}}"
            "@keyframes padspin{from{transform:rotate(-14deg)}to{transform:rotate(18deg) translate(5px,-4px)}}"
            "@keyframes bob{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-3px) rotate(3deg)}}"
@@ -325,16 +460,26 @@ CUSTOM = {
     "Mm": "M6 6m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0 M18 6m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0 M12 18m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0 M8.2 6h7.6 M7 8l4 8 M17 8l-4 8",
     "Sp": "M2 14c2-9 4-9 5 0s3 9 5 0 3-9 5 0 3 9 5 0",
     "Pi": "M3 12h5 M16 12h5 M8 7v10l8-10v10z",
+    "Sq": "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3",
+    "Rs": "M8 4l-5 8 5 8 M16 4l5 8-5 8 M10 12h4",
+    "Aw": "M5 21l6-12-2.5-5H5 M11 9l6 12h3 M8.5 4H11",
+    "Xl": "M4 4h16v16H4z M4 9h16 M4 15h16 M10 4v16 M13 11l4 6 M17 11l-4 6",
+    "Mp": "M3 3v18h18 M7 15l4-5 3 3 6-7 M7 19v-3 M12 19v-6 M17 19v-9",
+    "Nl": "M4 5h16v10H9l-5 4z M8 9h8 M8 12h5",
+    "Cv": "M18 8a7 7 0 1 0 0 8 M12 3a9 9 0 1 1 0 18",
+    "Hb": "M7 7m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M17 9m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M10 17m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M9 8l6 1 M8 9l1.5 5.5 M15.5 11l-4 4",
 }
-BRAND = {"Py": "Python", "Js": "JavaScript", "Re": "React", "Nd": "Node.js", "Ht": "HTML", "Vc": "Vercel", "Gm": "Gemini", "Gt": "Git"}
+BRAND = {"Py": "Python", "Js": "JavaScript", "Ts": "TypeScript", "Ja": "Java", "Re": "React", "Nd": "Node", "Ht": "HTML",
+         "Vc": "Vercel", "Gm": "Gemini", "Gt": "Git", "Gh": "GitHub", "Fa": "FastAPI", "At": "Airtable", "Pd": "pandas",
+         "Np": "NumPy", "Sk": "scikit-learn", "Tf": "TensorFlow", "Ju": "Jupyter", "Fg": "Figma"}
 
 def periodic(cfg, t, mode):
     els = cfg["elements"]; cols = 9
-    tw, th, gap, y0 = 82, 96, 7, 92
+    tw, th, gap, y0 = 82, 104, 7, 92
     x0 = (W - (cols * tw + (cols - 1) * gap)) / 2
     rows = math.ceil(len(els) / cols)
     w, h = W, y0 + rows * (th + gap) + 34
-    gc = {"code": t["blue"], "design": t["pink"], "bio": t["lime"]}
+    gc = {"code": t["blue"], "data": t["orange"], "design": t["pink"], "bio": t["lime"]}
     tiles = []
     n = len(els); cyc = 9.0
     for i, (sym, name, g) in enumerate(els):
@@ -344,19 +489,20 @@ def periodic(cfg, t, mode):
 <rect width="{tw}" height="{th}" rx="10" fill="{c}" fill-opacity=".08" stroke="{c}" stroke-opacity=".45"/>
 <rect width="{tw}" height="{th}" rx="10" fill="{c}" style="animation:glow {cyc}s ease-in-out {i*cyc/n - cyc:.2f}s infinite;opacity:0"/>
 <text x="9" y="18" class="mono" font-size="10" fill="{t["mute"]}">{i+1}</text>
-{icon(BRAND[sym], tw-25, 8, 16, brand_color(BRAND[sym], t)) if sym in BRAND else (f'<path transform="translate({tw-25} 8) scale(.667)" d="{CUSTOM[sym]}" stroke="{c}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>' if sym in CUSTOM else "")}
-<text x="{tw/2}" y="60" text-anchor="middle" class="sans b" font-size="31" fill="{t["ink"]}">{esc(sym)}</text>
-<text x="{tw/2}" y="83" text-anchor="middle" class="sans" font-size="9.5" fill="{t["mute"]}">{esc(name)}</text>
+{icon(BRAND[sym], tw/2-13, 22, 26, brand_color(BRAND[sym], t)) if sym in BRAND else (f'<path transform="translate({tw/2-13} 22) scale(1.083)" d="{CUSTOM[sym]}" stroke="{c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' if sym in CUSTOM else "")}
+<text x="{tw-9}" y="18" text-anchor="end" class="sans b" font-size="15" fill="{t["ink"]}">{esc(sym)}</text>
+<text x="{tw/2}" y="74" text-anchor="middle" class="sans b" font-size="12.5" fill="{t["ink"]}">{esc(name if len(name) < 13 else name.split()[0])}</text>
+<text x="{tw/2}" y="91" text-anchor="middle" class="mono" font-size="8.5" fill="{c}">{esc(g)}</text>
 </g>''')
     legend = "".join(
-        f'<circle cx="{530+i*90}" cy="54" r="5" fill="{gc[k]}"/><text x="{541+i*90}" y="58" class="sans" font-size="13" fill="{t["mute"]}">{k}</text>'
-        for i, k in enumerate(["code", "design", "bio"]))
+        f'<circle cx="{450+i*90}" cy="54" r="5" fill="{gc[k]}"/><text x="{461+i*90}" y="58" class="sans" font-size="13" fill="{t["mute"]}">{k}</text>'
+        for i, k in enumerate(["code", "data", "design", "bio"]))
     body = f'''{panel(w, h, t)}
 {mandala(W-40, 40, 70, t["orange"], .12, 80)}
 <text x="28" y="60" class="serif" font-size="34" fill="{t["ink"]}">periodic table of me</text>
 {legend}
 {"".join(tiles)}
-<text x="28" y="{h-14}" class="mono" font-size="11" fill="{t["faint"]}">no. 19 not yet discovered · stable at room temperature · reacts well with deadlines</text>'''
+<text x="28" y="{h-14}" class="mono" font-size="11" fill="{t["faint"]}">no. 37 not yet discovered · stable at room temperature · reacts well with deadlines</text>'''
     css = SPIN_CSS + "@keyframes glow{0%{opacity:0}6%{opacity:.28}16%{opacity:0}100%{opacity:0}}"
     return svg(w, h, body, css, ("serif-italic", "grotesk", "grotesk-bold", "mono"))
 
@@ -496,9 +642,8 @@ def ago(iso):
     except Exception:
         return ""
     s = (dt.datetime.now(dt.timezone.utc) - d).total_seconds()
-    if s < 3600: return f"{max(1,int(s//60))}m ago"
-    if s < 86400: return f"{int(s//3600)}h ago"
-    return f"{int(s//86400)}d ago"
+    days = int(s // 86400)
+    return "today" if days == 0 else "yesterday" if days == 1 else f"{days}d ago"
 
 def microbe_mark(shape, x, y, c, s=1.0):
     if shape == "chain":
@@ -753,6 +898,8 @@ def readme(cfg, has_shelf):
         title = f"🎏 release: {kind}"
         body = f"Releasing a {kind} koi into the pond.\n\nJust press **Submit**. It starts swimming with your name in about a minute."
         return f"https://github.com/{repo}/issues/new?title={quote(title)}&body={quote(body)}"
+    from urllib.parse import quote as _q
+    feed_url = f"https://github.com/{repo}/issues/new?title={_q('🍙 feed the koi')}&body={_q('Scattering pellets. Just press **Submit**.')}"
     koi_buttons = "\n".join(f'<a href="{release(k)}">{pic("koi-" + k, "release a " + k + " koi", "19%")}</a>' for k in KOI)
     div = f'<p align="center">{pic("divider", "")}</p>'
     buttons = "\n".join(
@@ -776,6 +923,7 @@ def readme(cfg, has_shelf):
 <p align="center">
 {koi_buttons}
 </p>
+<p align="center"><a href="{feed_url}"><b>🍙 or feed the koi</b></a> &nbsp;·&nbsp; <sub>the pond follows delhi's clock and weather, and dresses up for festivals</sub></p>
 
 {div}
 
@@ -842,7 +990,7 @@ def build():
     ASSETS.mkdir(exist_ok=True)
     has_shelf = False
     for mode, t in THEMES.items():
-        out = {"hero": hero(cfg, t, mode, dishd), "divider": divider(cfg, t, mode), "readouts": readouts(cfg, t, mode), "periodic": periodic(cfg, t, mode),
+        out = {"hero": hero(cfg, t, mode, dishd, state), "divider": divider(cfg, t, mode), "readouts": readouts(cfg, t, mode), "periodic": periodic(cfg, t, mode),
                "wetlab": wetlab(cfg, t, mode), "dish": dish(cfg, state, dishd, t, mode),
                "brewing": brewing(cfg, state, t, mode), "footer": footer(cfg, t, mode)}
         for p in cfg["projects"]: out["card-" + p["id"]] = card(p, t, mode)
@@ -863,6 +1011,8 @@ def gh(url, data=None):
 
 def grow():
     cfg = load("config.json"); state = load("state.json"); user = cfg["user"]
+    if os.environ.get("SKY_ONLY"):        # hourly run: only time of day + weather
+        state["sky"] = fetch_sky(); (LAB / "state.json").write_text(json.dumps(state, indent=2)); return build()
     q = {"query": "query($u:String!){user(login:$u){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount}}}}}}",
          "variables": {"u": user}}
     cal = gh("https://api.github.com/graphql", q)["data"]["user"]["contributionsCollection"]["contributionCalendar"]
@@ -873,6 +1023,7 @@ def grow():
         if r["name"].lower() != user.lower() and not r["fork"]:
             state["latest_repo"] = {"name": r["name"], "language": r["language"], "pushed_at": r["pushed_at"], "url": r["html_url"]}
             break
+    state["sky"] = fetch_sky()
     state["updated"] = dt.date.today().isoformat()
     (LAB / "state.json").write_text(json.dumps(state, indent=2))
     build()
@@ -890,14 +1041,26 @@ def inoculate():
         return reply("Hmm, I couldn't read your username. Nothing changed.")
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     low = title.lower()
-    m = re.search(r"release:\s*([a-z]+)", low)
-    if m:
-        kind = m.group(1)
-        if kind not in KOI:
-            return reply("That koi isn't in the pond's nursery. Try one of: " + ", ".join(KOI) + ".")
-        dishd["koi"] = [v for v in dishd["koi"] if v["user"].lower() != user.lower()][-30:] + [{"user": user, "koi": kind, "at": now}]
+    if "feed the koi" in low:
+        today = ist_now().date().isoformat()
+        dishd["feeds"] = [f for f in dishd.get("feeds", []) if f.get("day") == today] + [{"user": user, "day": today}]
         (LAB / "dish.json").write_text(json.dumps(dishd, indent=2)); build()
-        return reply(f"🎏 Your {kind} koi is in the pond, swimming with your name on it.\n\n"
+        n = len(dishd["feeds"])
+        return reply(f"🍙 Pellets in! The koi are crowding around the food. They've been fed {n}× today.\n\n"
+                     f"Refresh https://github.com/{cfg['user']} in a minute to watch them gather.")
+    m = re.search(r"release:\s*(.+)", title, re.I)
+    if m:
+        words = re.findall(r"[A-Za-z0-9][A-Za-z0-9 _.'-]*", m.group(1))
+        raw = " ".join(words).strip()
+        parts = raw.split()
+        kind = parts[0].lower() if parts and parts[0].lower() in KOI else None
+        name = " ".join(parts[1:] if kind else parts)[:16].strip()
+        if not kind:   # any name works: colour chosen from the name
+            kinds = list(KOI); kind = kinds[int(hashlib.sha256((name or user).lower().encode()).hexdigest(), 16) % len(kinds)]
+        dishd["koi"] = [v for v in dishd["koi"] if v["user"].lower() != user.lower()][-30:] + [{"user": user, "koi": kind, "name": name, "at": now}]
+        (LAB / "dish.json").write_text(json.dumps(dishd, indent=2)); build()
+        who = f"**{name}**, your {kind} koi," if name else f"Your {kind} koi"
+        return reply(f"🎏 {who} is in the pond now, swimming with your name on it.\n\n"
                      f"Refresh https://github.com/{cfg['user']} in a minute to see it. Thank you for visiting ✨")
     m = re.search(r"inoculate:\s*([a-z]+)", low)
     key = m.group(1) if m else ""
