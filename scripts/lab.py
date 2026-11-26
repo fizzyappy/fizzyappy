@@ -874,9 +874,15 @@ def footer(cfg, t, mode):
     return svg(w, h, body, bcss, ("serif-italic", "grotesk", "mono"))
 
 # ───────────────────────────── README ─────────────────────────────
+def ver(path):
+    """Content hash, so every changed image gets a fresh address and no cache can show an old one."""
+    p = ASSETS / path
+    return hashlib.sha1(p.read_bytes()).hexdigest()[:8] if p.exists() else "0"
+
 def pic(name, alt, width="100%"):
-    return (f'<picture><source media="(prefers-color-scheme: light)" srcset="assets/{name}-light.svg">'
-            f'<img src="assets/{name}-dark.svg" alt="{esc(alt)}" width="{width}"></picture>')
+    lt, dk = f"{name}-light.svg", f"{name}-dark.svg"
+    return (f'<picture><source media="(prefers-color-scheme: light)" srcset="assets/{lt}?v={ver(lt)}">'
+            f'<img src="assets/{dk}?v={ver(dk)}" alt="{esc(alt)}" width="{width}"></picture>')
 
 def readme(cfg, has_shelf):
     repo = cfg["repo"]
