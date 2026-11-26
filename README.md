@@ -53,7 +53,7 @@
 </p>
 
 <p align="center">
-<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=61f4350e"><img src="assets/dish-dark.svg?v=2408d269" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
+<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=9703291f"><img src="assets/dish-dark.svg?v=9d51c033" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>
