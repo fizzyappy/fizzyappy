@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero-dark.svg" alt="Aparna Trivedi: biochemical engineer, digital artist, builder of useful little things" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg"><img src="assets/hero-dark.svg" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
