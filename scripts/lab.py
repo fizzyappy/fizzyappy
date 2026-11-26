@@ -24,13 +24,13 @@ THEMES = {
                  mute="#9ca3c8", faint="#4f5888", agar1="#3b2c13", agar2="#1a1309", glass="#ffffff",
                  pink="#ff4d94", lime="#9be15d", blue="#2ec4b6", orange="#ffb020", violet="#a993ff",
                  yellow="#ffd84d", red="#ff5a3c", water1="#173563", water2="#0b1736", pad="#2f7d4f",
-                 shadow="#000000", grain=0.035, mirror="#dfe6ff"),
+                 shadow="#000000", grain=0.035, mirror="#dfe6ff", kolam="#ffb020"),
     # handmade paper: cream, deep brown ink, same jewel accents a little deeper
-    "light": dict(bg="#f6ecda", panel="#fff8eb", panel2="#f5e8cf", line="#e6d4b2", ink="#2b1a12",
+    "light": dict(bg="#f6ecda", panel="#f3faf7", panel2="#e6f3ee", line="#d3e8df", ink="#2b1a12",
                   mute="#7a6250", faint="#c2a984", agar1="#f8e7b7", agar2="#e9cd8c", glass="#2b1a12",
                   pink="#d6125c", lime="#4f8f12", blue="#0f8b86", orange="#e07b00", violet="#5b48c8",
                   yellow="#b98f00", red="#d63a1a", water1="#d3ece6", water2="#a8d5cf", pad="#5a9b4b",
-                  shadow="#8a6f50", grain=0.12, mirror="#9aa3b8"),
+                  shadow="#8a6f50", grain=0.08, mirror="#9aa3b8", kolam="#8fd3cb"),
 }
 ICONS = json.loads((LAB / "icons.json").read_text())
 
@@ -84,7 +84,7 @@ def mandala(cx, cy, r, c, op=0.12, spin=60, petals=12):
 SPIN_CSS = "@keyframes spin{to{transform:rotate(360deg)}}"
 
 def kolam_border(w, h, t, inset=14, c=None, op=.45):
-    c = c or t["orange"]
+    c = c or t["kolam"]
     dots = (f'<rect x="{inset}" y="{inset}" width="{w-2*inset}" height="{h-2*inset}" rx="14" stroke="{c}" stroke-opacity="{op}" '
             f'stroke-width="2.2" stroke-dasharray="0 9" stroke-linecap="round"/>')
     corners = ""
@@ -356,7 +356,7 @@ def hero(cfg, t, mode, dishd=None, state=None):
                     f'<animateMotion path="{d}" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite" rotate="auto"/></g>')
         if user:
             labels.append(f'<g><g transform="translate(0 -20)"><text x="0" y="0" text-anchor="middle" class="mono" font-size="10" '
-                          f'fill="{t["ink"]}" opacity=".85">{esc(name + " · ") if name else ""}@{esc(user)}</text></g>'
+                          f'fill="{t["mute"]}" opacity=".6">{esc(name + " · ") if name else ""}@{esc(user)}</text></g>'
                           f'<animateMotion path="{d}" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite"/></g>')
     pads = (lotus_pad(640, 352, 40, t, 0) + lotus_pad(778, 96, 28, t, 1) + lotus_pad(92, 380, 24, t, 2)
             + lotus_pad(500, 398, 18, t, 3) + lotus_pad(712, 398, 20, t, 4))
@@ -368,7 +368,7 @@ def hero(cfg, t, mode, dishd=None, state=None):
     p1 = 100 / n
     role_css = (f"@keyframes role{{0%{{opacity:0;transform:translateY(10px)}}{p1*0.12:.1f}%{{opacity:1;transform:translateY(0)}}"
                 f"{p1*0.85:.1f}%{{opacity:1;transform:translateY(0)}}{p1:.1f}%{{opacity:0;transform:translateY(-10px)}}100%{{opacity:0}}}}")
-    um = measure("~/" + cfg["user"], "mono", 13)
+    um = measure("~/" + cfg["user"], "mono", 13 * 1.2)
     body = f"""<defs>{clip_panel(w, h)}
 <radialGradient id="water" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="{t["water1"]}"/><stop offset="1" stop-color="{t["water2"]}"/></radialGradient>
 <linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="{t["water2"]}" stop-opacity=".78"/><stop offset=".58" stop-color="{t["water2"]}" stop-opacity="0"/></linearGradient>
@@ -383,20 +383,20 @@ def hero(cfg, t, mode, dishd=None, state=None):
   <rect width="{w}" height="{h}" fill="url(#fade)"/>
   {"".join(labels)}
   {over}
-  {mandala(w-20, 20, 120, t["orange"], .16, 90)}
+  {mandala(w-20, 20, 120, t["kolam"], .22, 90)}
 </g>
 <g transform="translate({w-30} {h-26})"><text x="0" y="0" text-anchor="end" class="mono" font-size="10.5" fill="{t["ink"]}" opacity=".75">{esc(chip)}</text></g>
 {kolam_border(w, h, t)}
 <text x="54" y="74" class="mono" font-size="13" fill="{t["mute"]}">~/{esc(cfg["user"])}</text>
-<circle cx="{62+um:.0f}" cy="69.5" r="4" fill="{t["orange"]}" style="animation:blink 1.6s ease-in-out infinite"/>
+<circle cx="{62+um:.0f}" cy="69.5" r="4" fill="{t["kolam"]}" style="animation:blink 1.6s ease-in-out infinite"/>
 <text x="{72+um:.0f}" y="74" class="mono" font-size="13" fill="{t["mute"]}">pond &amp; lab notebook, vol. {dt.date.today():%y}</text>
-<text x="50" y="188" class="serif" font-size="88" fill="{t["ink"]}" letter-spacing="-1">{esc(cfg["name"])}</text>
+<text x="50" y="188" class="serif" font-size="88" data-max="540" fill="{t["ink"]}" letter-spacing="-1">{esc(cfg["name"])}</text>
 <text x="54" y="226" class="sans" font-size="17" fill="{t["mute"]}">hi, i'm a</text>
 {role_txt}
 <text x="54" y="314" class="sans" font-size="15" fill="{t["ink"]}" opacity=".8">{esc(cfg["tagline"])}</text>
 <g transform="translate(54 342)">
-  <rect width="190" height="24" rx="12" fill="{t["panel"]}" fill-opacity=".75" stroke="{t["orange"]}" stroke-opacity=".7"/>
-  <circle cx="13" cy="12" r="3" fill="{t["orange"]}" style="animation:blink 1.6s ease-in-out infinite"/>
+  <rect width="190" height="24" rx="12" fill="{t["panel"]}" fill-opacity=".75" stroke="{t["kolam"]}" stroke-opacity=".9"/>
+  <circle cx="13" cy="12" r="3" fill="{t["pink"]}" style="animation:blink 1.6s ease-in-out infinite"/>
   <text x="23" y="16" class="mono" font-size="9.5" fill="{t["ink"]}">release your own koi below ↓</text>
 </g>"""
     css = (role_css + SPIN_CSS + EXTRAS_CSS +
@@ -415,7 +415,7 @@ def divider(cfg, t, mode):
         x = 30 + i * step; y = h / 2
         shape = i % 3
         if shape == 0:   # diamond with mirror
-            out.append(f'<path d="M{x},{y-15} L{x+11},{y} L{x},{y+15} L{x-11},{y} Z" stroke="{t["orange"]}" stroke-width="1.6"/>')
+            out.append(f'<path d="M{x},{y-15} L{x+11},{y} L{x},{y+15} L{x-11},{y} Z" stroke="{t["kolam"]}" stroke-width="1.6"/>')
             out.append(f'<circle cx="{x}" cy="{y}" r="5" fill="url(#mir)"/>')
             out.append(f'<circle cx="{x}" cy="{y}" r="5" fill="#fff" style="animation:glint 4.2s ease-in-out {i*0.2:.1f}s infinite;opacity:0"/>')
         elif shape == 1:
@@ -424,7 +424,7 @@ def divider(cfg, t, mode):
             out.append(f'<path d="M{x-6},{y} q6,-9 12,0 q-6,9 -12,0" stroke="{t["blue"]}" stroke-width="1.4"/>')
     body = (f'<defs><radialGradient id="mir" cx=".35" cy=".35"><stop offset="0" stop-color="#ffffff"/>'
             f'<stop offset=".6" stop-color="{t["mirror"]}"/><stop offset="1" stop-color="#6b7390"/></radialGradient></defs>'
-            f'<line x1="10" y1="{h/2}" x2="{w-10}" y2="{h/2}" stroke="{t["orange"]}" stroke-opacity=".35" stroke-dasharray="1 6" stroke-linecap="round" stroke-width="2"/>'
+            f'<line x1="10" y1="{h/2}" x2="{w-10}" y2="{h/2}" stroke="{t["kolam"]}" stroke-opacity=".5" stroke-dasharray="1 6" stroke-linecap="round" stroke-width="2"/>'
             + "".join(out))
     return svg(w, h, body, "@keyframes glint{0%,100%{opacity:0}8%{opacity:.95}18%{opacity:0}}")
 
@@ -497,7 +497,7 @@ def periodic(cfg, t, mode):
         for i, k in enumerate(["code", "data", "design", "bio"]))
     body = f'''{panel(w, h, t)}
 {mandala(W-40, 40, 70, t["orange"], .12, 80)}
-<text x="28" y="60" class="serif" font-size="34" fill="{t["ink"]}">periodic table of me</text>
+<text x="28" y="60" class="serif" font-size="32" data-max="380" fill="{t["ink"]}">periodic table of me</text>
 {legend}
 {"".join(tiles)}
 <text x="28" y="{h-14}" class="mono" font-size="11" fill="{t["faint"]}">no. 37 not yet discovered · stable at room temperature · reacts well with deadlines</text>'''
@@ -580,7 +580,7 @@ def card(p, t, mode):
 </g>
 <text x="26" y="40" class="mono" font-size="11" fill="{c}">No. {esc(p["no"])}</text>
 <text x="70" y="40" class="mono" font-size="11" fill="{t["mute"]}">{esc(p["kind"])}</text>
-<text x="24" y="82" class="serif" font-size="38" fill="{t["ink"]}">{esc(p["title"])}</text>
+<text x="24" y="82" class="serif" font-size="38" data-max="272" fill="{t["ink"]}">{esc(p["title"])}</text>
 <rect x="{w-90}" y="22" width="64" height="64" rx="16" fill="{c}" fill-opacity=".10" stroke="{c}" stroke-opacity=".45"/>
 {logo_img(p, w) or f'<g transform="translate({w-86} 32) scale(.92)">{motif(p["motif"], c, t)}</g>'}
 {blurb}
@@ -618,8 +618,8 @@ def wetlab(cfg, t, mode):
 {"".join(f'<text x="70" y="{46+j*19}" class="sans" font-size="13" fill="{t["mute"]}">{esc(l)}</text>' for j, l in enumerate(it["lines"]))}
 </g>''')
     body = f'''{panel(w, h, t)}
-<text x="28" y="58" class="serif" font-size="34" fill="{t["ink"]}">wet lab</text>
-<text x="160" y="57" class="sans" font-size="15" fill="{t["mute"]}">the bench work behind the code. no repo, just gloves.</text>
+<text x="28" y="58" class="serif" font-size="30" fill="{t["ink"]}">wet lab</text>
+<text x="170" y="57" class="sans" font-size="14" fill="{t["mute"]}">the bench work behind the code. no repo, just gloves.</text>
 <line x1="28" y1="76" x2="{w-28}" y2="76" stroke="{t["line"]}"/>
 {"".join(items)}'''
     css = ("@keyframes breath{0%,100%{transform:scale(.8)}50%{transform:scale(1.15)}}"
@@ -769,7 +769,7 @@ def dish(cfg, state, dishd, t, mode):
 <text x="{cx}" y="{cy+R-24}" text-anchor="middle" class="mono" font-size="10" fill="{t["ink"]}" opacity=".55">{esc(cfg["user"].upper())} · LB AGAR · 37°C</text>
 
 <text x="500" y="70" class="mono" font-size="12" fill="{t["mute"]}">plate no. {today:%j} · {today:%d %b %Y}</text>
-<text x="498" y="112" class="serif" font-size="40" fill="{t["ink"]}">the living culture</text>
+<text x="498" y="112" class="serif" font-size="40" data-max="310" fill="{t["ink"]}">the living culture</text>
 <text x="500" y="146" class="sans" font-size="14" fill="{t["mute"]}">every day I push code, a colony grows here.</text>
 <text x="500" y="166" class="sans" font-size="14" fill="{t["mute"]}">visitors can drop in a microbe of their own.</text>
 <text x="500" y="222" class="serif" font-size="46" fill="{t["pink"]}">{total}</text>
@@ -797,7 +797,8 @@ def button(key, m, t, mode):
     w, h = 160, 74
     c = t[m["color"]]
     marks = "".join(microbe_mark(m["shape"], 30 + dx, 37 + dy, c, 1.25) for dx, dy in [(-6, -7), (6, 1), (-3, 10)])
-    body = f'''<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{t["panel"]}" stroke="{c}" stroke-opacity=".6"/>
+    body = f'''<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{t["panel"]}"/>
+<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{c}" fill-opacity=".12" stroke="{c}" stroke-opacity=".22"/>
 <circle cx="30" cy="37" r="20" fill="{c}" fill-opacity=".12"/>
 <g style="animation:jig 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center">{marks}</g>
 <text x="58" y="34" class="sans b" font-size="14" fill="{t["ink"]}">{esc(m["name"])}</text>
@@ -807,9 +808,13 @@ def button(key, m, t, mode):
 
 def koi_button(kind, t, mode):
     w, h = 160, 74
-    body_c = col(KOI[kind][0], t); ring = t["orange"]
-    body = f'''<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{t["panel"]}" stroke="{ring}" stroke-opacity=".6"/>
-<circle cx="32" cy="37" r="22" fill="{t["water1"]}"/>
+    PASTEL = {"kohaku": "#fdecec", "marigold": "#fff1e2", "rani": "#fde6ef", "sumi": "#ecebf3", "peacock": "#e0f4f0"}
+    ACC = {"kohaku": "red", "marigold": "orange", "rani": "pink", "sumi": "violet", "peacock": "blue"}
+    ring = t[ACC[kind]]
+    fill = PASTEL[kind] if t is THEMES["light"] else t["panel"]
+    body = f'''<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{fill}" stroke="{ring}" stroke-opacity=".22"/>
+<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="37" fill="{ring}" fill-opacity="{0 if t is THEMES["light"] else .10}"/>
+<circle cx="32" cy="37" r="22" fill="#ffffff" fill-opacity=".7"/>
 <g transform="translate(34 37) rotate(-20)">{koi_fish(kind, t, "btn" + kind, .62)}</g>
 <text x="62" y="34" class="sans b" font-size="14" fill="{t["ink"]}">{KOI[kind][2]}</text>
 <text x="62" y="52" class="mono" font-size="10.5" fill="{ring}">+ release koi</text>'''
@@ -826,7 +831,7 @@ def brewing(cfg, state, t, mode):
 <rect x="42" y="58" width="44" height="36" rx="6" fill="{t["lime"]}" opacity=".85"/>
 {bb}
 <text x="124" y="44" class="mono" font-size="12" fill="{t["mute"]}">currently brewing</text>
-<text x="122" y="82" class="serif" font-size="36" fill="{t["ink"]}">{esc(rp.get("name","something new"))}</text>
+<text x="122" y="82" class="serif" font-size="36" data-max="300" fill="{t["ink"]}">{esc(rp.get("name","something new"))}</text>
 <text x="{134 + measure(rp.get("name","something new"), "serif-italic", 36):.0f}" y="80" class="mono" font-size="12" fill="{t["mute"]}">{esc(rp.get("language") or "")}{" · pushed " + ago(rp["pushed_at"]) if rp.get("pushed_at") else ""}</text>
 <line x1="520" y1="28" x2="520" y2="{h-28}" stroke="{t["line"]}"/>
 <text x="546" y="44" class="mono" font-size="12" fill="{t["mute"]}">off the screen</text>
@@ -868,7 +873,7 @@ def footer(cfg, t, mode):
     w, h = W, 150
     bb, bcss = bubbles(rng("foot"), 22, 20, 820, 170, 0, t, color=t["pink"], rmin=1.5, rmax=5, dur=(5, 10), cls="riseZ", op=0.5)
     body = f'''<defs>{clip_panel(w, h)}</defs>{panel(w, h, t)}<g clip-path="url(#pc)">{bb}</g>
-<text x="{w/2}" y="70" text-anchor="middle" class="serif" font-size="34" fill="{t["ink"]}">thanks for visiting the lab</text>
+<text x="{w/2}" y="70" text-anchor="middle" class="serif" font-size="30" data-max="700" fill="{t["ink"]}">thanks for visiting the lab</text>
 <text x="{w/2}" y="100" text-anchor="middle" class="sans" font-size="14" fill="{t["mute"]}">come back tomorrow. the culture will have grown.</text>
 <text x="{w/2}" y="128" text-anchor="middle" class="mono" font-size="11" fill="{t["faint"]}">© {dt.date.today().year} {esc(cfg["name"].lower())} · made with fizz · no bacteria were harmed</text>'''
     return svg(w, h, body, bcss, ("serif-italic", "grotesk", "mono"))
@@ -888,7 +893,7 @@ def readme(cfg, has_shelf):
     repo = cfg["repo"]
     def issue(key, m):
         title = f"🧫 inoculate: {key}"
-        body = (f"Inoculating the plate with {m['full']}.\n\nJust press **Submit**. "
+        body = (f"Inoculating the plate with {m['full']}.\n\nJust press **Create**. "
                 "A lab robot grows your colony and closes this issue in about a minute.")
         from urllib.parse import quote
         return f"https://github.com/{repo}/issues/new?title={quote(title)}&body={quote(body)}"
@@ -900,10 +905,10 @@ def readme(cfg, has_shelf):
     def release(kind):
         from urllib.parse import quote
         title = f"🎏 release: {kind}"
-        body = f"Releasing a {kind} koi into the pond.\n\nJust press **Submit**. It starts swimming with your name in about a minute."
+        body = f"Releasing a {kind} koi into the pond.\n\nJust press **Create**. It starts swimming with your name in about a minute."
         return f"https://github.com/{repo}/issues/new?title={quote(title)}&body={quote(body)}"
     from urllib.parse import quote as _q
-    feed_url = f"https://github.com/{repo}/issues/new?title={_q('🍙 feed the koi')}&body={_q('Scattering pellets. Just press **Submit**.')}"
+    feed_url = f"https://github.com/{repo}/issues/new?title={_q('🍙 feed the koi')}&body={_q('Scattering pellets. Just press **Create**.')}"
     koi_buttons = "\n".join(f'<a href="{release(k)}">{pic("koi-" + k, "release a " + k + " koi", "19%")}</a>' for k in KOI)
     div = f'<p align="center">{pic("divider", "")}</p>'
     buttons = "\n".join(
@@ -923,7 +928,7 @@ def readme(cfg, has_shelf):
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
-<p align="center"><sub>pick a koi → press <b>Submit</b> on the issue that opens → it swims in the pond above, with your name, in about a minute</sub></p>
+<p align="center"><sub>pick a koi → press <b>Create</b> on the issue that opens → it swims in the pond above, with your name, in about a minute</sub></p>
 <p align="center">
 {koi_buttons}
 </p>
@@ -956,7 +961,7 @@ def readme(cfg, has_shelf):
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>
-<p align="center"><sub>pick one → press <b>Submit</b> on the issue that opens → your colony appears on the plate in about a minute</sub></p>
+<p align="center"><sub>pick one → press <b>Create</b> on the issue that opens → your colony appears on the plate in about a minute</sub></p>
 
 <p align="center">
 {buttons}

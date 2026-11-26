@@ -87,7 +87,11 @@ def to_path(attrs, content, defs):
     text = html.unescape(re.sub(r"<[^>]+>", "", content))
     size = float(a.get("font-size", 16)); spacing = float(a.get("letter-spacing", 0))
     name = font_for(a.get("class", "sans"))
+    if name.startswith("mono"): size *= 1.2          # handwritten labels need a little more size
     items, width = layout(text, name, size, spacing)
+    mx = float(a.get("data-max", 0) or 0)
+    if mx and width > mx:                             # shrink titles to fit their space
+        size *= mx / width; items, width = layout(text, name, size, spacing)
     x, y = float(a.get("x", 0)), float(a.get("y", 0))
     anchor = a.get("text-anchor", "start")
     if anchor == "middle": x -= width / 2
