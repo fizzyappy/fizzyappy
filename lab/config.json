@@ -250,7 +250,8 @@
       "cta": "open the app",
       "url": "https://finn-henna.vercel.app",
       "color": "lime",
-      "motif": "chart"
+      "motif": "chart",
+      "repo": "Finn"
     },
     {
       "id": "saathi",
@@ -265,7 +266,8 @@
       "cta": "view repo",
       "url": "https://github.com/fizzyappy/Saathi-",
       "color": "pink",
-      "motif": "orb"
+      "motif": "orb",
+      "repo": "Saathi-"
     },
     {
       "id": "elementary",
@@ -281,7 +283,8 @@
       "cta": "open the app",
       "url": "https://elementary-iota.vercel.app",
       "color": "blue",
-      "motif": "element"
+      "motif": "element",
+      "repo": "Elementary"
     },
     {
       "id": "humanink",
@@ -296,7 +299,8 @@
       "cta": "view repo",
       "url": "https://github.com/fizzyappy/Human-Ink-Flipkart",
       "color": "orange",
-      "motif": "nib"
+      "motif": "nib",
+      "repo": "Human-Ink-Flipkart"
     },
     {
       "id": "sonakshi",
@@ -312,7 +316,8 @@
       "cta": "view repo",
       "url": "https://github.com/fizzyappy/Sonakshi-Sanyal-Website",
       "color": "violet",
-      "motif": "brush"
+      "motif": "brush",
+      "repo": "Sonakshi-Sanyal-Website"
     },
     {
       "id": "quant",
@@ -390,5 +395,14 @@
       "color": "yellow",
       "shape": "bud"
     }
-  }
+  },
+  "hide_repos": [
+    "fizzyappy",
+    "Affine_assignment",
+    "Updated_Assignment_Aparna",
+    "Coding_Challenge_Aparna_Trivedi",
+    "BBL434-26"
+  ],
+  "max_visitor_colonies": 12,
+  "max_visitor_koi": 10
 }

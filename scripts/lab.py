@@ -343,7 +343,7 @@ def hero(cfg, t, mode, dishd=None, state=None):
         for x, y, b in [(560, 120, 0), (720, 300, 1.6), (380, 380, 3.1), (220, 70, 4.2), (800, 200, 2.4)])
     fish, labels = [], []
     residents = [("kohaku", "r1"), ("marigold", "r2"), ("rani", "r3"), ("sumi", "r4"), ("kohaku", "r5")]
-    visitors = [v for v in (dishd.get("koi") or []) if v.get("koi") in KOI][-12:]
+    visitors = [v for v in (dishd.get("koi") or []) if v.get("koi") in KOI][-int(load("config.json").get("max_visitor_koi", 10)):]
     allk = [(k, u, None, 1.05, "") for k, u in residents] + [(v["koi"], "v" + v["user"], v["user"], .9, v.get("name", "")) for v in visitors]
     for kind, uid, user, sc, name in allk:
         rr = rng("path" + uid)
@@ -582,7 +582,7 @@ def card(p, t, mode):
 <text x="70" y="40" class="mono" font-size="11" fill="{t["mute"]}">{esc(p["kind"])}</text>
 <text x="24" y="82" class="serif" font-size="38" data-max="272" fill="{t["ink"]}">{esc(p["title"])}</text>
 <rect x="{w-90}" y="22" width="64" height="64" rx="16" fill="{c}" fill-opacity=".10" stroke="{c}" stroke-opacity=".45"/>
-{logo_img(p, w) or f'<g transform="translate({w-86} 32) scale(.92)">{motif(p["motif"], c, t)}</g>'}
+{logo_img(p, w) or (f'<text x="{w-58}" y="70" text-anchor="middle" class="serif" font-size="40" fill="{c}">{esc(p["title"][:1].upper())}</text>' if p["motif"] == "initial" else f'<g transform="translate({w-86} 32) scale(.92)">{motif(p["motif"], c, t)}</g>')}
 {blurb}
 {"".join(tags)}
 <text x="{w-26}" y="{h-28}" text-anchor="end" class="sans b" font-size="13" fill="{t["ink"]}">{esc(p["cta"])} ↗</text>'''
@@ -698,7 +698,7 @@ def dish(cfg, state, dishd, t, mode):
 </g>''' + (f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{rad+6:.1f}" stroke="{t["pink"]}" stroke-width="1.4" style="animation:ping 2.4s ease-out infinite;transform-box:fill-box;transform-origin:center"/>' if fresh else ""))
 
     # visitor colonies
-    mic = cfg["microbes"]; vis = dishd.get("visitors", [])
+    mic = cfg["microbes"]; vis = dishd.get("visitors", [])[-cfg.get("max_visitor_colonies", 12):]
     for i, v in enumerate(vis):
         m = mic.get(v["microbe"]);
         if not m: continue
@@ -714,8 +714,7 @@ def dish(cfg, state, dishd, t, mode):
         cl.append(f'''<g style="animation:breath {rng(v["user"]).uniform(3,5):.1f}s ease-in-out {-i*0.5:.1f}s infinite;transform-box:fill-box;transform-origin:center">
 <circle cx="{x:.1f}" cy="{y:.1f}" r="{rad+2.5:.1f}" fill="{c}" opacity=".25"/>
 <circle cx="{x:.1f}" cy="{y:.1f}" r="{rad:.1f}" fill="{c}" opacity=".9"/>{marks}</g>''')
-        if i == len(vis) - 1:
-            cl.append(f'<text x="{x+rad+6:.1f}" y="{y+4:.1f}" class="mono" font-size="11" fill="{t["ink"]}">← @{esc(v["user"])}</text>')
+
 
     total = state.get("total", sum(n for _, n in days))
     ph, quip = phase(total)
@@ -735,15 +734,16 @@ def dish(cfg, state, dishd, t, mode):
     for j, v in enumerate(list(reversed(vis))[:5]):
         m = mic.get(v["microbe"], {}); c = t[m.get("color", "ink")]
         log.append(f'<circle cx="506" cy="{412+j*0}" r="0"/>')
+    from collections import Counter
+    tally = Counter(v["microbe"] for v in vis if v["microbe"] in mic)
     rows = "".join(
-        f'<circle cx="{506}" cy="{454+j*18-4}" r="4" fill="{t[mic.get(v["microbe"],{}).get("color","mute")]}"/>'
-        f'<text x="518" y="{454+j*18}" class="mono" font-size="11" fill="{t["ink"]}">@{esc(v["user"][:18])}</text>'
-        f'<text x="676" y="{454+j*18}" class="mono" font-size="11" fill="{t["mute"]}">{esc(mic.get(v["microbe"],{}).get("name",""))}</text>'
-        for j, v in enumerate(list(reversed(vis))[:4]))
+        f'<circle cx="506" cy="{450+j*18}" r="4" fill="{t[mic[k]["color"]]}"/>'
+        f'<text x="518" y="{454+j*18}" class="mono" font-size="11" fill="{t["ink"]}">{esc(mic[k]["name"])}</text>'
+        f'<text x="680" y="{454+j*18}" class="mono" font-size="11" fill="{t["mute"]}">× {c_}</text>'
+        for j, (k, c_) in enumerate(tally.most_common(3)))
     if not vis:
         rows = (f'<text x="500" y="456" class="sans" font-size="13" fill="{t["mute"]}">no visitors yet. the plate is all yours:</text>'
                 f'<text x="500" y="476" class="sans b" font-size="13" fill="{t["pink"]}">be the first to inoculate ↓</text>')
-
     body = f'''<defs>
 {clip_panel(w, h)}
 <radialGradient id="agar" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="{t["agar1"]}"/><stop offset="1" stop-color="{t["agar2"]}"/></radialGradient>
@@ -785,7 +785,7 @@ def dish(cfg, state, dishd, t, mode):
 {marks}
 <text x="500" y="{gy-16}" class="mono" font-size="10.5" fill="{t["mute"]}">{esc(quip)}</text>
 <line x1="500" y1="402" x2="{w-30}" y2="402" stroke="{t["line"]}"/>
-<text x="500" y="428" class="mono" font-size="11" fill="{t["mute"]}">latest visitors</text>
+<text x="500" y="428" class="mono" font-size="11" fill="{t["mute"]}">on the plate</text>
 {rows}'''
     css = (SPIN_CSS + "@keyframes breath{0%,100%{transform:scale(.96)}50%{transform:scale(1.04)}}"
            "@keyframes ping{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.8);opacity:0}}"
@@ -994,8 +994,32 @@ def readme(cfg, has_shelf):
 def load(name):
     return json.loads((LAB / name).read_text())
 
+def all_projects(cfg, state):
+    """Curated cards from config, then a card for every other public repo (newest first)."""
+    projects = list(cfg["projects"])
+    have = {p.get("repo", "").lower() for p in projects}
+    hide = {h.lower() for h in cfg.get("hide_repos", [])}
+    colors = ["blue", "pink", "lime", "orange", "violet", "yellow"]
+    n = len(projects)
+    for r in state.get("repos", []):
+        nm = r["name"]
+        if r.get("fork") or nm.lower() in have or nm.lower() in hide:
+            continue
+        n += 1
+        lang = r.get("language")
+        tags = ([lang] if lang else []) + [t for t in (r.get("topics") or []) if t][:2]
+        projects.append({
+            "id": "repo-" + re.sub(r"[^a-z0-9]+", "-", nm.lower()).strip("-"), "no": f"{n:02d}",
+            "title": re.sub(r"[-_]+", " ", nm).strip(), "kind": "repo · " + (lang or "code").lower(),
+            "blurb": r.get("description") or "A new experiment, fresh out of the incubator.",
+            "tags": tags or ["new"], "cta": "open the app" if r.get("homepage") else "view repo",
+            "url": r.get("homepage") or r["html_url"], "color": colors[n % len(colors)], "motif": "initial"})
+        if n >= cfg.get("max_cards", 12): break
+    return projects
+
 def build():
     cfg, state, dishd = load("config.json"), load("state.json"), load("dish.json")
+    cfg["projects"] = all_projects(cfg, state)
     ASSETS.mkdir(exist_ok=True)
     has_shelf = False
     for mode, t in THEMES.items():
@@ -1018,16 +1042,26 @@ def gh(url, data=None):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
+def fetch_repos(user, state):
+    repos = gh(f"https://api.github.com/users/{user}/repos?sort=pushed&per_page=100")
+    state["repos"] = [{"name": r["name"], "description": r["description"], "language": r["language"],
+                       "homepage": r["homepage"], "html_url": r["html_url"], "pushed_at": r["pushed_at"],
+                       "fork": r["fork"], "topics": r.get("topics", [])} for r in repos]
+    return repos
+
 def grow():
     cfg = load("config.json"); state = load("state.json"); user = cfg["user"]
-    if os.environ.get("SKY_ONLY"):        # hourly run: only time of day + weather
-        state["sky"] = fetch_sky(); (LAB / "state.json").write_text(json.dumps(state, indent=2)); return build()
+    if os.environ.get("SKY_ONLY"):        # hourly run: time of day, weather, and new repos
+        state["sky"] = fetch_sky()
+        try: fetch_repos(user, state)
+        except Exception as e: print("repos skipped:", e)
+        (LAB / "state.json").write_text(json.dumps(state, indent=2)); return build()
     q = {"query": "query($u:String!){user(login:$u){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount}}}}}}",
          "variables": {"u": user}}
     cal = gh("https://api.github.com/graphql", q)["data"]["user"]["contributionsCollection"]["contributionCalendar"]
     state["total"] = cal["totalContributions"]
     state["days"] = {d["date"]: d["contributionCount"] for wk in cal["weeks"] for d in wk["contributionDays"] if d["contributionCount"]}
-    repos = gh(f"https://api.github.com/users/{user}/repos?sort=pushed&per_page=10")
+    repos = fetch_repos(user, state)
     for r in repos:
         if r["name"].lower() != user.lower() and not r["fork"]:
             state["latest_repo"] = {"name": r["name"], "language": r["language"], "pushed_at": r["pushed_at"], "url": r["html_url"]}
@@ -1066,7 +1100,8 @@ def inoculate():
         name = " ".join(parts[1:] if kind else parts)[:16].strip()
         if not kind:   # any name works: colour chosen from the name
             kinds = list(KOI); kind = kinds[int(hashlib.sha256((name or user).lower().encode()).hexdigest(), 16) % len(kinds)]
-        dishd["koi"] = [v for v in dishd["koi"] if v["user"].lower() != user.lower()][-30:] + [{"user": user, "koi": kind, "name": name, "at": now}]
+        keep = cfg.get("max_visitor_koi", 10) - 1   # pond full? the oldest visitor koi swims away
+        dishd["koi"] = [v for v in dishd["koi"] if v["user"].lower() != user.lower()][-keep:] + [{"user": user, "koi": kind, "name": name, "at": now}]
         (LAB / "dish.json").write_text(json.dumps(dishd, indent=2)); build()
         who = f"**{name}**, your {kind} koi," if name else f"Your {kind} koi"
         return reply(f"🎏 {who} is in the pond now, swimming with your name on it.\n\n"
@@ -1077,7 +1112,7 @@ def inoculate():
         return reply("That microbe isn't in the fridge. Try one of: " + ", ".join(cfg["microbes"]) + ".")
     vis = [v for v in dishd["visitors"] if v["user"].lower() != user.lower()]
     vis.append({"user": user, "microbe": key, "at": now})
-    dishd["visitors"] = vis[-40:]
+    dishd["visitors"] = vis[-cfg.get("max_visitor_colonies", 12):]   # crowded? oldest colonies are removed first
     (LAB / "dish.json").write_text(json.dumps(dishd, indent=2)); build()
     name = cfg["microbes"][key]["full"]
     reply(f"🧫 Inoculated! *{name}* is now growing on the plate as @{user}'s colony.\n\n"
