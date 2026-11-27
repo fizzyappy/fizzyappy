@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=9e8ef834"><img src="assets/hero-dark.svg?v=eda4acbe" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=069f15a1"><img src="assets/hero-dark.svg?v=7da63cc2" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/brewing-light.svg?v=83ee1b4b"><img src="assets/brewing-dark.svg?v=ba49eba1" alt="currently brewing" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/brewing-light.svg?v=98adb441"><img src="assets/brewing-dark.svg?v=0511f269" alt="currently brewing" width="100%"></picture>
 </p>
 
 <p align="center">
@@ -47,13 +47,16 @@
 <a href="https://github.com/fizzyappy/Sonakshi-Sanyal-Website"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-sonakshi-light.svg?v=a6bd13e5"><img src="assets/card-sonakshi-dark.svg?v=f156bbe8" alt="Sonakshi Sanyal: A single-page portfolio for an illustrator and writer: gallery, publications and gentle animation, no build step." width="49%"></picture></a>
 <a href="https://github.com/fizzyappy"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-quant-light.svg?v=9f192f07"><img src="assets/card-quant-dark.svg?v=00c08f72" alt="GS Quant Hackathon: Goldman Sachs Quant Hackathon: ETF proxy models for NAV, risk and hedging." width="49%"></picture></a>
 </p>
+<p align="center">
+<a href="https://github.com/fizzyappy/laundry-handover"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-repo-laundry-handover-light.svg?v=7054d9e1"><img src="assets/card-repo-laundry-handover-dark.svg?v=917f2063" alt="laundry handover: A new experiment, fresh out of the incubator." width="49%"></picture></a>
+</p>
 
 <p align="center">
 <picture><source media="(prefers-color-scheme: light)" srcset="assets/wetlab-light.svg?v=e7541d91"><img src="assets/wetlab-dark.svg?v=64032c0e" alt="wet lab projects" width="100%"></picture>
 </p>
 
 <p align="center">
-<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=6b6d1b76"><img src="assets/dish-dark.svg?v=e178cee8" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
+<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=bbc5b956"><img src="assets/dish-dark.svg?v=2380dc5b" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>
