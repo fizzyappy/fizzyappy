@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-26",
-  "total": 137,
+  "updated": "2026-11-27",
+  "total": 151,
   "days": {
     "2026-01-08": 3,
     "2026-01-27": 6,
@@ -16,7 +16,8 @@
     "2026-11-13": 1,
     "2026-11-14": 22,
     "2026-11-15": 82,
-    "2026-11-26": 1
+    "2026-11-26": 1,
+    "2026-11-27": 14
   },
   "latest_repo": {
     "name": "Finn",
@@ -25,8 +26,110 @@
     "url": "https://github.com/fizzyappy/Finn"
   },
   "sky": {
-    "phase": "night",
-    "weather": "clear",
-    "temp": 15
-  }
+    "phase": "day",
+    "weather": "smog",
+    "temp": 13
+  },
+  "repos": [
+    {
+      "name": "fizzyappy",
+      "description": null,
+      "language": "Python",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/fizzyappy",
+      "pushed_at": "2026-11-27T01:41:22Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Finn",
+      "description": null,
+      "language": "Python",
+      "homepage": "https://finn-henna.vercel.app",
+      "html_url": "https://github.com/fizzyappy/Finn",
+      "pushed_at": "2026-11-26T20:10:50Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Human-Ink-Flipkart",
+      "description": null,
+      "language": "HTML",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Human-Ink-Flipkart",
+      "pushed_at": "2026-11-09T12:32:02Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Sonakshi-Sanyal-Website",
+      "description": null,
+      "language": "JavaScript",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Sonakshi-Sanyal-Website",
+      "pushed_at": "2026-07-18T08:14:52Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Elementary",
+      "description": null,
+      "language": "JavaScript",
+      "homepage": "https://elementary-iota.vercel.app",
+      "html_url": "https://github.com/fizzyappy/Elementary",
+      "pushed_at": "2026-07-16T20:44:06Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Saathi-",
+      "description": "Saathi is not a chatbot you ask. It's an autonomous AI teammate that runs the business for India's smallest sellers \u2014 the first-time, home-based, often-women entrepreneurs who power Meesho but have zero operations support",
+      "language": "HTML",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Saathi-",
+      "pushed_at": "2026-06-19T10:56:32Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Affine_assignment",
+      "description": null,
+      "language": null,
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Affine_assignment",
+      "pushed_at": "2026-02-15T14:28:31Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Updated_Assignment_Aparna",
+      "description": "Assignment 1- BBL434",
+      "language": "Python",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Updated_Assignment_Aparna",
+      "pushed_at": "2026-02-04T13:04:44Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Coding_Challenge_Aparna_Trivedi",
+      "description": "Assignment 1- BBL434",
+      "language": "Python",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/Coding_Challenge_Aparna_Trivedi",
+      "pushed_at": "2026-01-27T18:17:11Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "BBL434-26",
+      "description": null,
+      "language": "Python",
+      "homepage": null,
+      "html_url": "https://github.com/fizzyappy/BBL434-26",
+      "pushed_at": "2026-01-08T10:42:19Z",
+      "fork": false,
+      "topics": []
+    }
+  ]
 }
