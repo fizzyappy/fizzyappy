@@ -24,13 +24,13 @@ THEMES = {
                  mute="#9ca3c8", faint="#4f5888", agar1="#3b2c13", agar2="#1a1309", glass="#ffffff",
                  pink="#ff4d94", lime="#9be15d", blue="#2ec4b6", orange="#ffb020", violet="#a993ff",
                  yellow="#ffd84d", red="#ff5a3c", water1="#173563", water2="#0b1736", pad="#2f7d4f",
-                 shadow="#000000", grain=0.035, mirror="#dfe6ff", kolam="#ffb020"),
+                 shadow="#000000", grain=0.035, mirror="#dfe6ff", kolam="#ffb020", pondframe="#ffb020"),
     # handmade paper: cream, deep brown ink, same jewel accents a little deeper
     "light": dict(bg="#f6ecda", panel="#f3faf7", panel2="#e6f3ee", line="#d3e8df", ink="#2b1a12",
                   mute="#7a6250", faint="#c2a984", agar1="#f8e7b7", agar2="#e9cd8c", glass="#2b1a12",
                   pink="#d6125c", lime="#4f8f12", blue="#0f8b86", orange="#e07b00", violet="#5b48c8",
                   yellow="#b98f00", red="#d63a1a", water1="#d3ece6", water2="#a8d5cf", pad="#5a9b4b",
-                  shadow="#8a6f50", grain=0.08, mirror="#9aa3b8", kolam="#8fd3cb"),
+                  shadow="#8a6f50", grain=0.08, mirror="#9aa3b8", kolam="#8fd3cb", pondframe="#e597b3"),
 }
 ICONS = json.loads((LAB / "icons.json").read_text())
 
@@ -350,7 +350,8 @@ def hero(cfg, t, mode, dishd=None, state=None):
         if spot and not user:   # fed today: residents gather around the food
             d = wander("path" + uid + "fed", spot[0]-120, spot[1]-90, spot[0]+120, spot[1]+90, n=rr.choice([5, 6]))
         else:
-            d = wander("path" + uid, 40, 40, 800, 395, n=rr.choice([5, 6, 7]))
+            # visitor fish stay below the header line so their name tags never cover it
+            d = wander("path" + uid, 40, 110 if user else 40, 800, 395, n=rr.choice([5, 6, 7]))
         dur = rr.uniform(26, 44); beg = -rr.uniform(0, dur)
         fish.append(f'<g>{koi_fish(kind, t, uid, sc)}'
                     f'<animateMotion path="{d}" dur="{dur:.1f}s" begin="{beg:.1f}s" repeatCount="indefinite" rotate="auto"/></g>')
@@ -383,12 +384,12 @@ def hero(cfg, t, mode, dishd=None, state=None):
   <rect width="{w}" height="{h}" fill="url(#fade)"/>
   {"".join(labels)}
   {over}
-  {mandala(w-20, 20, 120, t["kolam"], .22, 90)}
+  {mandala(w-20, 20, 120, t["pondframe"], .2, 90)}
 </g>
 <g transform="translate({w-30} {h-26})"><text x="0" y="0" text-anchor="end" class="mono" font-size="10.5" fill="{t["ink"]}" opacity=".75">{esc(chip)}</text></g>
-{kolam_border(w, h, t)}
+{kolam_border(w, h, t, c=t["pondframe"], op=.8)}
 <text x="54" y="74" class="mono" font-size="13" fill="{t["mute"]}">~/{esc(cfg["user"])}</text>
-<circle cx="{62+um:.0f}" cy="69.5" r="4" fill="{t["kolam"]}" style="animation:blink 1.6s ease-in-out infinite"/>
+<circle cx="{62+um:.0f}" cy="69.5" r="4" fill="{t["pondframe"]}" style="animation:blink 1.6s ease-in-out infinite"/>
 <text x="{72+um:.0f}" y="74" class="mono" font-size="13" fill="{t["mute"]}">pond &amp; lab notebook, vol. {dt.date.today():%y}</text>
 <text x="50" y="188" class="serif" font-size="88" data-max="540" fill="{t["ink"]}" letter-spacing="-1">{esc(cfg["name"])}</text>
 <text x="54" y="226" class="sans" font-size="17" fill="{t["mute"]}">hi, i'm a</text>
