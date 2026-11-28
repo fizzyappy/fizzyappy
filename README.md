@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=07d1bf35"><img src="assets/hero-dark.svg?v=38fa96c7" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=f49f61f6"><img src="assets/hero-dark.svg?v=286225c4" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/brewing-light.svg?v=98adb441"><img src="assets/brewing-dark.svg?v=0511f269" alt="currently brewing" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/brewing-light.svg?v=09ebb816"><img src="assets/brewing-dark.svg?v=345996b0" alt="currently brewing" width="100%"></picture>
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@
 </p>
 
 <p align="center">
-<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=9bac4324"><img src="assets/dish-dark.svg?v=5608a5dc" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
+<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=0bb5bbc1"><img src="assets/dish-dark.svg?v=2fd36de9" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>
