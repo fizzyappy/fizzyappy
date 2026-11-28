@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=069f15a1"><img src="assets/hero-dark.svg?v=7da63cc2" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: light)" srcset="assets/hero-light.svg?v=07d1bf35"><img src="assets/hero-dark.svg?v=38fa96c7" alt="Aparna Trivedi: builder, biochemical engineer, digital artist, typical ML nerd, professional overthinker" width="100%"></picture>
 </p>
 
 <h3 align="center">🎏 release a koi into my pond</h3>
@@ -48,7 +48,7 @@
 <a href="https://github.com/fizzyappy"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-quant-light.svg?v=9f192f07"><img src="assets/card-quant-dark.svg?v=00c08f72" alt="GS Quant Hackathon: Goldman Sachs Quant Hackathon: ETF proxy models for NAV, risk and hedging." width="49%"></picture></a>
 </p>
 <p align="center">
-<a href="https://github.com/fizzyappy/laundry-handover"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-repo-laundry-handover-light.svg?v=7054d9e1"><img src="assets/card-repo-laundry-handover-dark.svg?v=917f2063" alt="laundry handover: A new experiment, fresh out of the incubator." width="49%"></picture></a>
+<a href="https://laundry-handover.vercel.app"><picture><source media="(prefers-color-scheme: light)" srcset="assets/card-repo-laundry-handover-light.svg?v=4dbd22c5"><img src="assets/card-repo-laundry-handover-dark.svg?v=fcac7ed6" alt="laundry handover: A new experiment, fresh out of the incubator." width="49%"></picture></a>
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@
 </p>
 
 <p align="center">
-<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=bbc5b956"><img src="assets/dish-dark.svg?v=2380dc5b" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
+<a href="#the-living-culture"><picture><source media="(prefers-color-scheme: light)" srcset="assets/dish-light.svg?v=9bac4324"><img src="assets/dish-dark.svg?v=5608a5dc" alt="a live petri dish: one colony per day of commits, plus visitor colonies" width="100%"></picture></a>
 </p>
 
 <h3 align="center" id="the-living-culture">🧫 or drop a microbe into my petri dish</h3>

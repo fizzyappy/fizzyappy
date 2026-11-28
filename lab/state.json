@@ -26,28 +26,18 @@
     "url": "https://github.com/fizzyappy/Finn"
   },
   "sky": {
-    "phase": "night",
+    "phase": "day",
     "weather": "smog",
-    "temp": 15
+    "temp": 17
   },
   "repos": [
     {
-      "name": "Finn",
-      "description": null,
-      "language": "Python",
-      "homepage": "https://finn-henna.vercel.app",
-      "html_url": "https://github.com/fizzyappy/Finn",
-      "pushed_at": "2026-11-27T20:00:02Z",
-      "fork": false,
-      "topics": []
-    },
-    {
       "name": "laundry-handover",
       "description": null,
-      "language": null,
-      "homepage": null,
+      "language": "JavaScript",
+      "homepage": "https://laundry-handover.vercel.app",
       "html_url": "https://github.com/fizzyappy/laundry-handover",
-      "pushed_at": "2026-11-27T18:51:02Z",
+      "pushed_at": "2026-11-28T01:32:17Z",
       "fork": false,
       "topics": []
     },
@@ -57,7 +47,17 @@
       "language": "Python",
       "homepage": null,
       "html_url": "https://github.com/fizzyappy/fizzyappy",
-      "pushed_at": "2026-11-27T12:26:01Z",
+      "pushed_at": "2026-11-27T21:08:23Z",
+      "fork": false,
+      "topics": []
+    },
+    {
+      "name": "Finn",
+      "description": null,
+      "language": "Python",
+      "homepage": "https://finn-henna.vercel.app",
+      "html_url": "https://github.com/fizzyappy/Finn",
+      "pushed_at": "2026-11-27T20:00:02Z",
       "fork": false,
       "topics": []
     },
